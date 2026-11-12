@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weft — live signal loom</title>
+<meta name="description" content="Every edit to every Wikipedia, live: a signal drum woven from the real edit stream, with stations, pulses and a full control room around it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=25">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="top">
+    <div class="brand">
+      <b>WEFT</b><span>/ live signal loom</span>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="mode" id="mode"><i></i><span>CONNECTING</span></div>
+  </header>
+
+  <aside class="col left">
+    <section class="pnl grow" id="pStations">
+      <h3><b>01</b> STATIONS <em id="stN">last 5 min</em></h3>
+      <div class="stations" id="stations"></div>
+    </section>
+    <section class="pnl" id="pNs">
+      <h3><b>02</b> NAMESPACES <em>last 5 min</em></h3>
+      <div class="bars" id="ns"></div>
+    </section>
+    <section class="pnl" id="pWho">
+      <h3><b>03</b> WHO EDITS <em>last 5 min</em></h3>
+      <div class="who" id="who"></div>
+    </section>
+    <section class="pnl" id="pSize">
+      <h3><b>07</b> SIZE SPECTRUM <em>removed ◂ ▸ added</em></h3>
+      <canvas id="spec" class="plot"></canvas>
+    </section>
+  </aside>
+
+  <main class="stage" id="stage">
+    <canvas id="gl"></canvas>
+    <svg class="leads" id="leads"></svg>
+    <div class="slabels" id="slabels"></div>
+    <div class="ctip" id="ctip" hidden></div>
+    <div class="overlay tl">
+      <p class="ttl">SIGNAL DRUM</p>
+      <p class="sub">ring = <span id="paceLbl">1 s</span> · column group = one threaded wiki · cell = one edit</p>
+    </div>
+    <div class="legend" id="legend"></div>
+    <nav class="ctrls">
+      <button id="bPause" class="cb" aria-pressed="false">PAUSE</button>
+      <span class="seg" id="pace"><button data-p="500">0.5S</button><button data-p="1000">1S</button><button data-p="2000">2S</button></span>
+      <button id="bBots" class="cb tg" aria-pressed="true">BOTS</button>
+      <button id="bOrbit" class="cb tg" aria-pressed="true">ORBIT</button>
+      <button id="bReset" class="cb">RESET</button>
+    </nav>
+    <p class="hint">drag · orbit &nbsp; wheel · zoom &nbsp; click a cell or a station</p>
+    <div class="nogl" id="nogl" hidden>WebGL 2 is not available. All panels still work.</div>
+  </main>
+
+  <section class="low">
+    <div class="pnl heat">
+      <h3><b>06</b> HEAT MATRIX <em>threaded wikis × last 10 min · 10 s per cell</em></h3>
+      <div class="heatbox"><canvas id="heat"></canvas></div>
+    </div>
+    <div class="pnl fric">
+      <h3><b>08</b> FRICTION <em>edit wars · 15 min</em></h3>
+      <ol class="fric-l" id="fric"></ol>
+    </div>
+    <div class="pnl watch">
+      <h3><b>09</b> WATCHLIST <em id="wN"></em></h3>
+      <form id="wForm" class="wform" autocomplete="off"><input id="wIn" placeholder="add a word to watch…" maxlength="40" spellcheck="false"><button>ADD</button></form>
+      <div class="wkeys" id="wKeys"></div>
+      <ol class="whits" id="wHits"></ol>
+    </div>
+  </section>
+
+  <aside class="col right">
+    <section class="pnl grow logp">
+      <h3><b>04</b> SIGNAL LOG
+        <span class="tabs" id="tabs"><button data-t="all" class="on">ALL</button><button data-t="new">NEW</button><button data-t="hits">HITS</button></span>
+      </h3>
+      <div class="filters">
+        <input id="fText" placeholder="filter title or user…" spellcheck="false">
+        <button id="fScope" class="scope" aria-pressed="false" title="only threaded wikis">THREADED</button>
+      </div>
+      <div class="kchips" id="kchips"></div>
+      <ol class="log" id="log"></ol>
+      <p class="logstate" id="logState">LIVE · hover to freeze</p>
+    </section>
+    <section class="pnl insp" id="insp">
+      <h3><b>05</b> INSPECTOR</h3>
+      <div id="inspBody" class="ibody"><p class="dim">Click a log line, a lit cell on the drum or a station.</p></div>
+    </section>
+    <div class="exp">
+      <button id="eJson">EXPORT JSON</button><button id="eCsv">EXPORT CSV</button>
+    </div>
+  </aside>
+</div>
+
+<script src="app.js?v=25"></script>
+</body>
+</html>
